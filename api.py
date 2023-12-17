@@ -27,14 +27,14 @@ def answer_question(question):
     )
     text = text_splitter.split_text(raw_text)
     embeddings = OpenAIEmbeddings(
-        openai_api_key="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"
+        openai_api_key="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"
     )
     print(embeddings)
     documet_search = FAISS.from_texts(text,embeddings)
  
  
     chain = load_qa_chain(OpenAI(
-        openai_api_key="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"
+        openai_api_key="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"
         ),chain_type="stuff")
  
     docs = documet_search.similarity_search(question)
@@ -51,5 +51,14 @@ def custom_qna():
             "answer":responce
         })
    
+
+@app.route('/success', methods = ['POST'])   
+def success():   
+    if request.method == 'POST':   
+        f = request.files['file'] 
+        f.save("sample.pdf")   
+        return jsonify({
+            "answer":True
+        })
    
-app.run(debug=True,port=os.environ['PORT'])
+app.run(debug=True)
